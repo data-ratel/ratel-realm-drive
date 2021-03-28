@@ -65,7 +65,7 @@ func UploadFilesHandler(c *gin.Context) {
 	}
 
 	if !hasErr {
-		c.JSON(http.StatusOK, gin.H{
+		c.JSON(http.StatusCreated, gin.H{
 			"result": "success",
 			"msg":    fmt.Sprintf("%d files uploaded!", len(files)),
 		})
