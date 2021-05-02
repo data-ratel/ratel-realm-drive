@@ -2,6 +2,7 @@
     "server_port": 8666,
     "server_mode": "debug",
     "central_server": "localhost",
-    "central_port": 443,
+    "central_port": 8868,
+    "central_protocol": "http",
     "database_path": "./data/db"
 }

@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -43,11 +44,20 @@ func initStorageConfig() {
 }
 
 type AppConfig struct {
-	ServerPort int    `json:"server_port"`
-	ServerMode string `json:"server_mode"`
+	ServerPort      int    `json:"server_port"`
+	ServerMode      string `json:"server_mode"`
+	CentralServer   string `json:"central_server"`
+	CentralPort     int    `json:"central_port"`
+	CentralProtocol string `json:"central_protocol"`
+	DatabasePath    string `json:"database_path"`
 }
 
 var appConfig *AppConfig
+var appConfigFilePath string
+
+func SetAppConfigFilePath(path string) {
+	appConfigFilePath = path
+}
 
 func GetServerConfig() *AppConfig {
 	if appConfig == nil {
@@ -58,7 +68,10 @@ func GetServerConfig() *AppConfig {
 }
 
 func initServerConfig() {
-	jsonFile, err := os.Open("config/app.json")
+	if appConfigFilePath == "" {
+		appConfigFilePath = "config/app.json"
+	}
+	jsonFile, err := os.Open(appConfigFilePath)
 	var config AppConfig
 
 	if err != nil {
@@ -87,4 +100,9 @@ func (config *AppConfig) GetServerMode() string {
 	default:
 		return gin.DebugMode
 	}
+}
+
+func CentralHost() string {
+	config := GetServerConfig()
+	return fmt.Sprintf("%s://%s:%d", config.CentralProtocol, config.CentralServer, config.CentralPort)
 }
