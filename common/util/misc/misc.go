@@ -2,6 +2,9 @@ package misc
 
 import (
 	"os"
+
+	"github.com/ratel-drive-core/common/util/config"
+	"go.uber.org/zap"
 )
 
 func IsPathExists(path string) bool {
@@ -21,4 +24,17 @@ func IsPathDir(path string) (bool, error) {
 	}
 
 	return fi.IsDir(), nil
+}
+
+func CheckCreateDataDirectory() {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+
+	rootDir := config.GetStorageConfig().StorageRootDir
+	if err := os.MkdirAll(rootDir, os.ModePerm); err != nil {
+		logger.Error("Create data directory failed!",
+			zap.String("error", "Please check if you have the permission!"),
+		)
+		return
+	}
 }

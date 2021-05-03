@@ -20,9 +20,6 @@ type RegisterDeviceReq struct {
 }
 
 func RegisterDevice(loginResult auth.LoginResult) bool {
-	logger, _ := zap.NewProduction()
-	defer logger.Sync()
-
 	token := loginResult.User.Token
 	userID := loginResult.User.UserID
 

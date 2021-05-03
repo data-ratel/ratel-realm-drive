@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/ratel-drive-core/common/util/config"
+	"github.com/ratel-drive-core/common/util/misc"
 	"github.com/ratel-drive-core/service/storage"
 )
 
@@ -12,10 +13,14 @@ func main() {
 	appConfig := config.GetServerConfig()
 	gin.SetMode(appConfig.GetServerMode())
 
+	misc.CheckCreateDataDirectory()
+
 	r := gin.Default()
 
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
 	r.MaxMultipartMemory = 8 << 20 // 8 MiB
+
+	r.Static("/app", "./ui/build")
 
 	v1 := r.Group("/api")
 	v1_storage := v1.Group("/storage")
