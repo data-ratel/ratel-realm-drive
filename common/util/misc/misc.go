@@ -7,6 +7,11 @@ import (
 	"go.uber.org/zap"
 )
 
+// HTTP json result wrapper
+type JSONResult struct {
+	Data string `json:"data"`
+}
+
 func IsPathExists(path string) bool {
 	if _, err := os.Stat(path); err == nil {
 		return true

@@ -9,6 +9,21 @@ import (
 	"github.com/ratel-drive-core/common/util/config"
 )
 
+type FileInfo struct {
+	FileName string `json:"file_name"`
+	IsDir    bool   `json:"is_dir"`
+}
+
+// Files godoc
+// @tags files
+// @summary Retrieve files information
+// @description get files by specified path
+// @accept  json
+// @produce json
+// @param   path path string true "the path that you want to list the files"
+// @success 200 {object} misc.JSONResult{data=[]FileInfo}
+// @failure 400 {object} error.ErrorResult{error=string}
+// @router /api/storage/files [get]
 func QueryFilesHandler(c *gin.Context) {
 	rootDir := config.GetStorageConfig().StorageRootDir
 	path := c.Query("path")
@@ -18,22 +33,17 @@ func QueryFilesHandler(c *gin.Context) {
 		log.Panic(err)
 
 		c.JSON(http.StatusBadRequest, gin.H{
-			"result": "failed",
-			"error":  err.Error(),
+			"error": err.Error(),
 		})
 		return
 	}
 
-	var fiArray []gin.H
+	var fiArray []FileInfo
 	for _, fi := range files {
-		fiArray = append(fiArray, gin.H{
-			"file_name": fi.Name(),
-			"is_dir":    fi.IsDir(),
-		})
+		fiArray = append(fiArray, FileInfo{fi.Name(), fi.IsDir()})
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"result": "success",
-		"data":   fiArray,
+		"data": fiArray,
 	})
 }

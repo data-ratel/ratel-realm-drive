@@ -16,3 +16,10 @@
 
 # defaul storage data root dir
 data
+
+# Swagger generated file
+docs/docs.go
+docs/swagger*
+
+# build directory
+build/
