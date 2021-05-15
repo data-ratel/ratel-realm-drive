@@ -26,8 +26,8 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host drive.rateldata.com
-// @BasePath /api
+// @host localhost:8666
+// @BasePath /
 func main() {
 	appConfig := config.GetServerConfig()
 	gin.SetMode(appConfig.GetServerMode())

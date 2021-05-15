@@ -17,6 +17,16 @@ type DownloadParams struct {
 	FilePaths []string `json:"file_paths"`
 }
 
+// Files godoc
+// @tags files
+// @summary Download a single file
+// @description Download a single file by the specified file path
+// @accept  json
+// @produce octet-stream
+// @param   file path string true "the file that you want to download"
+// @success 200 {file} binary
+// @failure 400 {object} error.ErrorResult{error=string}
+// @router /api/storage/download [get]
 func DownloadSingleFileHandler(c *gin.Context) {
 	rootDir := config.GetStorageConfig().StorageRootDir
 	path := c.Query("file")
@@ -26,12 +36,22 @@ func DownloadSingleFileHandler(c *gin.Context) {
 		c.File(targetFilePath)
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"result": "failed",
-			"error":  "file is not existed",
+			"error": "file is not existed",
 		})
 	}
 }
 
+// Files godoc
+// @tags files
+// @summary Download multiple files
+// @description Download files by the specified file paths, will be zipped
+// @accept  json
+// @produce octet-stream
+// @param   files body DownloadParams true "the files that you want to download"
+// @success 200 {file} binary
+// @failure 400 {object} error.ErrorResult{error=string}
+// @failure 500 {object} error.ErrorResult{error=string}
+// @router /api/storage/download [post]
 func DownloadMultiFilesHandler(c *gin.Context) {
 	var params DownloadParams
 	if err := c.ShouldBindJSON(&params); err != nil {
@@ -43,8 +63,7 @@ func DownloadMultiFilesHandler(c *gin.Context) {
 
 	if len(params.FilePaths) <= 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"result": "failed",
-			"error":  "no files to download",
+			"error": "no files to download",
 		})
 		return
 	}
@@ -65,9 +84,8 @@ func DownloadMultiFilesHandler(c *gin.Context) {
 	err := archiver.Archive(sourceFilesPaths, targetFilePath)
 	if err != nil {
 		log.Panicln(err)
-		c.JSON(http.StatusBadRequest, gin.H{
-			"result": "failed",
-			"error":  "internal issue",
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal issue",
 		})
 		return
 	}
@@ -77,8 +95,7 @@ func DownloadMultiFilesHandler(c *gin.Context) {
 	} else {
 		log.Panicln("[WARN] Something wrong while creating zipped file for downloading")
 		c.JSON(http.StatusBadRequest, gin.H{
-			"result": "failed",
-			"error":  "file is not existed",
+			"error": "file is not existed",
 		})
 	}
 }
