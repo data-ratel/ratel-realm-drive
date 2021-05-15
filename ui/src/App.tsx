@@ -1,24 +1,66 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import './pages/page.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import Home from './pages/Home';
+import Login from './pages/Login';
+
+import {
+  BrowserRouter as Router,
+  Route,
+  NavLink
+} from 'react-router-dom';
+
+import { CSSTransition } from 'react-transition-group'
+import { Navbar, Nav } from 'react-bootstrap'
 
 function App() {
+  const routes = [
+    { path: '/', name: 'Home', Component: Home },
+    { path: '/login', name: 'Login', Component: Login },
+  ];
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <>
+          <Navbar bg="light">
+            <Nav className="mx-auto">
+              {routes.map(route => (
+                <Nav.Link
+                  key={route.path}
+                  as={NavLink}
+                  to={route.path}
+                  activeClassName="active"
+                  exact
+                >
+                  {route.name}
+                </Nav.Link>
+              ))}
+            </Nav>
+          </Navbar>
+          
+          <div>
+            {routes.map(({ path, Component }) => (
+              <Route key={path} exact path={path}>
+                {({ match }) => (
+                  <CSSTransition
+                    in={match != null}
+                    timeout={300}
+                    classNames='page'
+                    unmountOnExit
+                  >
+                    <div className='page'>
+                      <Component />
+                    </div>
+                  </CSSTransition>
+                )}
+              </Route>
+            ))}
+          </div>
+        </>
+      </Router>
     </div>
   );
 }
