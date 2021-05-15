@@ -7,10 +7,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/RatelData/ratel-drive-core/common/util/config"
+	"github.com/RatelData/ratel-drive-core/common/util/misc"
 	"github.com/gin-gonic/gin"
 	"github.com/mholt/archiver"
-	"github.com/ratel-drive-core/common/util/config"
-	"github.com/ratel-drive-core/common/util/misc"
 )
 
 type DownloadParams struct {

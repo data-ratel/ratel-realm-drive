@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 
-	_ "github.com/ratel-drive-core/docs"
+	_ "github.com/RatelData/ratel-drive-core/docs"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
+	"github.com/RatelData/ratel-drive-core/common/util/config"
+	"github.com/RatelData/ratel-drive-core/common/util/misc"
+	"github.com/RatelData/ratel-drive-core/service/storage"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/ratel-drive-core/common/util/config"
-	"github.com/ratel-drive-core/common/util/misc"
-	"github.com/ratel-drive-core/service/storage"
 )
 
 // @title RatelDriveCore API
@@ -41,8 +41,7 @@ func main() {
 
 	r.Use(static.Serve("/", static.LocalFile("./ui/build", false)))
 
-	url := ginSwagger.URL("/docs/doc.json") // The url pointing to API definition
-	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	v1 := r.Group("/api")
 	v1_storage := v1.Group("/storage")

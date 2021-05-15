@@ -3,8 +3,8 @@ package device
 import (
 	"testing"
 
-	"github.com/ratel-drive-core/common/auth"
-	"github.com/ratel-drive-core/common/util/config"
+	"github.com/RatelData/ratel-drive-core/common/auth"
+	"github.com/RatelData/ratel-drive-core/common/util/config"
 )
 
 func TestGenDeviceID(t *testing.T) {

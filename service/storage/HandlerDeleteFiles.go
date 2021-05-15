@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/RatelData/ratel-drive-core/common/util/config"
 	"github.com/gin-gonic/gin"
-	"github.com/ratel-drive-core/common/util/config"
 )
 
 func DeleteFileHandler(c *gin.Context) {

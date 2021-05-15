@@ -3,7 +3,7 @@ package auth
 import (
 	"testing"
 
-	"github.com/ratel-drive-core/common/util/config"
+	"github.com/RatelData/ratel-drive-core/common/util/config"
 )
 
 func TestLogin(t *testing.T) {

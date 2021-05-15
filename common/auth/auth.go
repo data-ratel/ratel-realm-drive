@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 
+	"github.com/RatelData/ratel-drive-core/common/util/config"
 	"github.com/go-resty/resty/v2"
-	"github.com/ratel-drive-core/common/util/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

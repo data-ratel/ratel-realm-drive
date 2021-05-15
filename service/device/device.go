@@ -3,10 +3,10 @@ package device
 import (
 	"encoding/json"
 
+	"github.com/RatelData/ratel-drive-core/common/auth"
+	"github.com/RatelData/ratel-drive-core/common/util/config"
 	"github.com/go-resty/resty/v2"
 	"github.com/google/uuid"
-	"github.com/ratel-drive-core/common/auth"
-	"github.com/ratel-drive-core/common/util/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

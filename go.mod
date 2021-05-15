@@ -1,10 +1,9 @@
-module github.com/ratel-drive-core
+module github.com/RatelData/ratel-drive-core
 
 go 1.16
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
-	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/dsnet/compress v0.0.1 // indirect
 	github.com/frankban/quicktest v1.12.1 // indirect
 	github.com/gin-contrib/static v0.0.1
@@ -22,7 +21,6 @@ require (
 	github.com/mholt/archiver v3.1.1+incompatible
 	github.com/nwaples/rardecode v1.1.0 // indirect
 	github.com/pierrec/lz4 v2.6.0+incompatible // indirect
-	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
 	github.com/swaggo/gin-swagger v1.3.0
 	github.com/swaggo/swag v1.7.0
@@ -31,7 +29,7 @@ require (
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
 	go.uber.org/zap v1.16.0
 	golang.org/x/crypto v0.0.0-20210506145944-38f3c27a63bf // indirect
-	golang.org/x/net v0.0.0-20210508051633-16afe75a6701 // indirect
-	golang.org/x/sys v0.0.0-20210507161434-a76c4d0a0096 // indirect
-	golang.org/x/tools v0.1.0 // indirect
+	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
+	golang.org/x/sys v0.0.0-20210514084401-e8d321eab015 // indirect
+	golang.org/x/tools v0.1.1 // indirect
 )

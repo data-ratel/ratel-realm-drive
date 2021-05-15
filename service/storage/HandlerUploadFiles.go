@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/RatelData/ratel-drive-core/common/util/config"
 	"github.com/gin-gonic/gin"
-	"github.com/ratel-drive-core/common/util/config"
 )
 
 type UploadMetaData struct {

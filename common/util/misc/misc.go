@@ -3,7 +3,7 @@ package misc
 import (
 	"os"
 
-	"github.com/ratel-drive-core/common/util/config"
+	"github.com/RatelData/ratel-drive-core/common/util/config"
 	"go.uber.org/zap"
 )
 
