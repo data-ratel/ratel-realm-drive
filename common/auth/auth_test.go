@@ -8,7 +8,7 @@ import (
 
 func TestLogin(t *testing.T) {
 	config.SetAppConfigFilePath("../../config/app.json")
-	_, err := Login("test", "test123456")
+	_, err := Login("test@test.com", "test123456")
 	if err != nil {
 		t.Fail()
 	}

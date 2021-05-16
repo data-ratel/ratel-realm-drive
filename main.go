@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	_ "github.com/RatelData/ratel-drive-core/docs"
+	"github.com/gin-contrib/static"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/RatelData/ratel-drive-core/common/util/config"
 	"github.com/RatelData/ratel-drive-core/common/util/misc"
 	"github.com/RatelData/ratel-drive-core/service/storage"
-	"github.com/gin-contrib/static"
+	"github.com/RatelData/ratel-drive-core/service/users"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,13 +40,16 @@ func main() {
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
 	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 
-	r.Use(static.Serve("/", static.LocalFile("./ui/build", false)))
+	r.Use(static.Serve("/app", static.LocalFile("./ui/build", false)))
 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	v1 := r.Group("/api")
+
 	v1_storage := v1.Group("/storage")
 	storage.RegisterAllRouters(v1_storage)
+
+	users.UsersRoutesRegister(v1)
 
 	r.Run(fmt.Sprintf(":%d", appConfig.ServerPort))
 }

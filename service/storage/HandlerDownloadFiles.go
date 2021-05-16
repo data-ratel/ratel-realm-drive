@@ -25,7 +25,7 @@ type DownloadParams struct {
 // @produce octet-stream
 // @param   file path string true "the file that you want to download"
 // @success 200 {file} binary
-// @failure 400 {object} error.ErrorResult{error=string}
+// @failure 400 {object} errors.ErrorResult{error=string}
 // @router /api/storage/download [get]
 func DownloadSingleFileHandler(c *gin.Context) {
 	rootDir := config.GetStorageConfig().StorageRootDir
@@ -49,8 +49,8 @@ func DownloadSingleFileHandler(c *gin.Context) {
 // @produce octet-stream
 // @param   files body DownloadParams true "the files that you want to download"
 // @success 200 {file} binary
-// @failure 400 {object} error.ErrorResult{error=string}
-// @failure 500 {object} error.ErrorResult{error=string}
+// @failure 400 {object} errors.ErrorResult{error=string}
+// @failure 500 {object} errors.ErrorResult{error=string}
 // @router /api/storage/download [post]
 func DownloadMultiFilesHandler(c *gin.Context) {
 	var params DownloadParams

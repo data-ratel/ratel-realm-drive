@@ -3,6 +3,7 @@ package auth
 import (
 	"encoding/json"
 	"errors"
+	"net/http"
 
 	"github.com/RatelData/ratel-drive-core/common/util/config"
 	"github.com/go-resty/resty/v2"
@@ -16,7 +17,7 @@ func CentralToken() string {
 
 type LoginReq struct {
 	User struct {
-		Username string `json:"username"`
+		Email    string `json:"email"`
 		Password string `json:"password"`
 	} `json:"user"`
 }
@@ -28,11 +29,11 @@ type LoginResult struct {
 	} `json:"user"`
 }
 
-func Login(username string, password string) (LoginResult, error) {
+func Login(email string, password string) (LoginResult, error) {
 
 	endpoint := "/api/login"
 	loginReq := LoginReq{}
-	loginReq.User.Username = username
+	loginReq.User.Email = email
 	loginReq.User.Password = password
 
 	body, _ := json.Marshal(loginReq)
@@ -56,7 +57,7 @@ func handleLoginResult(resp *resty.Response, err error) bool {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
 
-	if err == nil && resp.StatusCode() == 200 {
+	if err == nil && resp.StatusCode() == http.StatusOK {
 		logger.Info("Login succeed!",
 			zap.String("body", resp.String()),
 		)

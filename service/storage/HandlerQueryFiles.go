@@ -22,7 +22,7 @@ type FileInfo struct {
 // @produce json
 // @param   path path string true "the path that you want to list the files"
 // @success 200 {object} misc.JSONResult{data=[]FileInfo}
-// @failure 400 {object} error.ErrorResult{error=string}
+// @failure 400 {object} errors.ErrorResult{error=string}
 // @router /api/storage/files [get]
 func QueryFilesHandler(c *gin.Context) {
 	rootDir := config.GetStorageConfig().StorageRootDir

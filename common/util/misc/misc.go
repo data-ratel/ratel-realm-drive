@@ -4,6 +4,8 @@ import (
 	"os"
 
 	"github.com/RatelData/ratel-drive-core/common/util/config"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"go.uber.org/zap"
 )
 
@@ -42,4 +44,9 @@ func CheckCreateDataDirectory() {
 		)
 		return
 	}
+}
+
+func Bind(c *gin.Context, obj interface{}) error {
+	b := binding.Default(c.Request.Method, c.ContentType())
+	return c.ShouldBindWith(obj, b)
 }

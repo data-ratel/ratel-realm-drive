@@ -5,9 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   NavLink
 } from 'react-router-dom';
@@ -19,6 +20,7 @@ function App() {
   const routes = [
     { path: '/', name: 'Home', Component: Home },
     { path: '/login', name: 'Login', Component: Login },
+    { path: '/404', name: 'NotFound', Component: NotFound}
   ];
 
   return (
@@ -27,7 +29,7 @@ function App() {
         <>
           <Navbar bg="light">
             <Nav className="mx-auto">
-              {routes.map(route => (
+              {routes.filter(route => route.path !== '/404').map(route => (
                 <Nav.Link
                   key={route.path}
                   as={NavLink}
