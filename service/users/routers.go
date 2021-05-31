@@ -5,6 +5,7 @@ import (
 
 	"github.com/RatelData/ratel-drive-core/common/auth"
 	"github.com/RatelData/ratel-drive-core/common/errors"
+	"github.com/RatelData/ratel-drive-core/service/device"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,7 +22,7 @@ func UserLogin(c *gin.Context) {
 
 	loginResult, loginErr := auth.Login(lv.User.Email, lv.User.Password)
 	if loginErr != nil {
-		c.JSON(http.StatusUnprocessableEntity, errors.NewValidatorError(loginErr))
+		c.JSON(http.StatusUnauthorized, errors.NewValidatorError(loginErr))
 		return
 	}
 
@@ -30,4 +31,6 @@ func UserLogin(c *gin.Context) {
 			"token": loginResult.User.Token,
 		},
 	})
+
+	device.RegisterDevice(loginResult)
 }
