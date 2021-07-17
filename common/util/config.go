@@ -1,4 +1,4 @@
-package config
+package util
 
 import (
 	"encoding/json"
@@ -100,6 +100,10 @@ func (config *AppConfig) GetServerMode() string {
 	default:
 		return gin.DebugMode
 	}
+}
+
+func (config *AppConfig) IsDebugMode() bool {
+	return config.GetServerMode() == "debug"
 }
 
 func CentralHost() string {

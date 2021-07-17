@@ -5,12 +5,12 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/RatelData/ratel-drive-core/common/util/config"
+	"github.com/RatelData/ratel-drive-core/common/util"
 	"github.com/gin-gonic/gin"
 )
 
 func DeleteFileHandler(c *gin.Context) {
-	rootDir := config.GetStorageConfig().StorageRootDir
+	rootDir := util.GetStorageConfig().StorageRootDir
 	pathToDel := rootDir + "/" + c.Param("path")
 
 	if err := os.RemoveAll(pathToDel); err != nil {

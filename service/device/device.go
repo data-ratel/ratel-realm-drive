@@ -2,9 +2,10 @@ package device
 
 import (
 	"encoding/json"
+	"net/http"
 
 	"github.com/RatelData/ratel-drive-core/common/auth"
-	"github.com/RatelData/ratel-drive-core/common/util/config"
+	"github.com/RatelData/ratel-drive-core/common/util"
 	"github.com/go-resty/resty/v2"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
@@ -28,7 +29,7 @@ func RegisterDevice(loginResult auth.LoginResult) bool {
 	registerDevReq := RegisterDeviceReq{}
 	registerDevReq.Device.DeviceID = genDeviceID()
 	registerDevReq.Device.UserID = userID
-	registerDevReq.Device.ServicePort = config.GetServerConfig().ServerPort
+	registerDevReq.Device.ServicePort = util.GetServerConfig().ServerPort
 
 	body, _ := json.Marshal(registerDevReq)
 
@@ -37,7 +38,7 @@ func RegisterDevice(loginResult auth.LoginResult) bool {
 		SetHeader("Content-Type", "application/json").
 		SetAuthToken(token).
 		SetBody(body).
-		Post(config.CentralHost() + endpoint)
+		Post(util.CentralHost() + endpoint)
 
 	return handleRegisterDeviceResult(resp, err)
 }
@@ -48,10 +49,9 @@ func genDeviceID() string {
 }
 
 func handleRegisterDeviceResult(resp *resty.Response, err error) bool {
-	logger, _ := zap.NewProduction()
-	defer logger.Sync()
+	logger := util.GetLogger()
 
-	if err == nil && resp.StatusCode() == 201 {
+	if err == nil && resp.StatusCode() == http.StatusCreated {
 		logger.Info("Register device succeed!",
 			zap.String("body", resp.String()),
 		)

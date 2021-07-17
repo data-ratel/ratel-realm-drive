@@ -7,8 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/RatelData/ratel-drive-core/common/util/config"
-	"github.com/RatelData/ratel-drive-core/common/util/misc"
+	"github.com/RatelData/ratel-drive-core/common/util"
 	"github.com/gin-gonic/gin"
 	"github.com/mholt/archiver"
 )
@@ -25,14 +24,14 @@ type DownloadParams struct {
 // @produce octet-stream
 // @param   file path string true "the file that you want to download"
 // @success 200 {file} binary
-// @failure 400 {object} errors.ErrorResult{error=string}
+// @failure 400 {object} types.ErrorResult{error=string}
 // @router /api/storage/download [get]
 func DownloadSingleFileHandler(c *gin.Context) {
-	rootDir := config.GetStorageConfig().StorageRootDir
+	rootDir := util.GetStorageConfig().StorageRootDir
 	path := c.Query("file")
 
 	targetFilePath := fmt.Sprintf("%s/%s", rootDir, path)
-	if misc.IsPathExists(targetFilePath) {
+	if util.IsPathExists(targetFilePath) {
 		c.File(targetFilePath)
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -49,8 +48,8 @@ func DownloadSingleFileHandler(c *gin.Context) {
 // @produce octet-stream
 // @param   files body DownloadParams true "the files that you want to download"
 // @success 200 {file} binary
-// @failure 400 {object} errors.ErrorResult{error=string}
-// @failure 500 {object} errors.ErrorResult{error=string}
+// @failure 400 {object} types.ErrorResult{error=string}
+// @failure 500 {object} types.ErrorResult{error=string}
 // @router /api/storage/download [post]
 func DownloadMultiFilesHandler(c *gin.Context) {
 	var params DownloadParams
@@ -71,11 +70,11 @@ func DownloadMultiFilesHandler(c *gin.Context) {
 	// if download multiple files or directories
 	// zip them to a temporary file
 	// serve this zipped file
-	tempDir := config.GetStorageConfig().TempDir
+	tempDir := util.GetStorageConfig().TempDir
 	targetFilePath := fmt.Sprintf("%s/archive-%d.zip", tempDir, time.Now().Unix())
 	defer os.Remove(targetFilePath)
 
-	rootDir := config.GetStorageConfig().StorageRootDir
+	rootDir := util.GetStorageConfig().StorageRootDir
 	var sourceFilesPaths []string
 	for _, path := range params.FilePaths {
 		sourceFilesPaths = append(sourceFilesPaths, rootDir+"/"+path)
@@ -90,7 +89,7 @@ func DownloadMultiFilesHandler(c *gin.Context) {
 		return
 	}
 
-	if misc.IsPathExists(targetFilePath) {
+	if util.IsPathExists(targetFilePath) {
 		c.File(targetFilePath)
 	} else {
 		log.Panicln("[WARN] Something wrong while creating zipped file for downloading")

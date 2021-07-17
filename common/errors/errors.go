@@ -6,15 +6,6 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type BaseError struct {
-	Error string `json:"error"`
-}
-
-// HTTP error result wrapper
-type ErrorResult struct {
-	Error string `json:"error"`
-}
-
 type CommonError struct {
 	Errors map[string]interface{} `json:"errors"`
 }

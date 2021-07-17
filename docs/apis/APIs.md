@@ -1,4 +1,4 @@
-# APIs documentation
+# APIs documentation (Deprecated)
 
 All APIs start with `/api`
 

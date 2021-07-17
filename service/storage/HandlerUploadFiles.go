@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/RatelData/ratel-drive-core/common/util/config"
+	"github.com/RatelData/ratel-drive-core/common/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -48,7 +48,7 @@ func UploadFilesHandler(c *gin.Context) {
 		if len(extraData) > 0 {
 			relativeDst = uploadMeta.Dst[file.Filename]
 		}
-		dst := fmt.Sprintf("%s/%s", config.GetStorageConfig().StorageRootDir, relativeDst)
+		dst := fmt.Sprintf("%s/%s", util.GetStorageConfig().StorageRootDir, relativeDst)
 		if err := os.MkdirAll(filepath.Dir(dst), os.ModePerm); err != nil {
 			log.Panicln(err)
 			c.JSON(http.StatusBadRequest, gin.H{

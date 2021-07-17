@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/RatelData/ratel-drive-core/common/util/config"
+	"github.com/RatelData/ratel-drive-core/common/util"
 	"github.com/go-resty/resty/v2"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -44,7 +44,7 @@ func Login(email string, password string) (LoginResult, error) {
 		SetHeader("Content-Type", "application/json").
 		SetBody(body).
 		SetResult(&loginResult).
-		Post(config.CentralHost() + endpoint)
+		Post(util.CentralHost() + endpoint)
 
 	if handleLoginResult(resp, err) {
 		return loginResult, nil
@@ -54,8 +54,7 @@ func Login(email string, password string) (LoginResult, error) {
 }
 
 func handleLoginResult(resp *resty.Response, err error) bool {
-	logger, _ := zap.NewProduction()
-	defer logger.Sync()
+	logger := util.GetLogger()
 
 	if err == nil && resp.StatusCode() == http.StatusOK {
 		logger.Info("Login succeed!",

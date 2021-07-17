@@ -1,18 +1,10 @@
-package misc
+package util
 
 import (
 	"os"
 
-	"github.com/RatelData/ratel-drive-core/common/util/config"
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"go.uber.org/zap"
 )
-
-// HTTP json result wrapper
-type JSONResult struct {
-	Data string `json:"data"`
-}
 
 func IsPathExists(path string) bool {
 	if _, err := os.Stat(path); err == nil {
@@ -34,19 +26,13 @@ func IsPathDir(path string) (bool, error) {
 }
 
 func CheckCreateDataDirectory() {
-	logger, _ := zap.NewProduction()
-	defer logger.Sync()
+	logger := GetLogger()
 
-	rootDir := config.GetStorageConfig().StorageRootDir
+	rootDir := GetStorageConfig().StorageRootDir
 	if err := os.MkdirAll(rootDir, os.ModePerm); err != nil {
 		logger.Error("Create data directory failed!",
 			zap.String("error", "Please check if you have the permission!"),
 		)
 		return
 	}
-}
-
-func Bind(c *gin.Context, obj interface{}) error {
-	b := binding.Default(c.Request.Method, c.ContentType())
-	return c.ShouldBindWith(obj, b)
 }

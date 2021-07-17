@@ -6,6 +6,7 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/dsnet/compress v0.0.1 // indirect
 	github.com/frankban/quicktest v1.12.1 // indirect
+	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-openapi/spec v0.20.3 // indirect

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/RatelData/ratel-drive-core/common/auth"
-	"github.com/RatelData/ratel-drive-core/common/util/config"
+	"github.com/RatelData/ratel-drive-core/common/util"
 )
 
 func TestGenDeviceID(t *testing.T) {
@@ -12,7 +12,7 @@ func TestGenDeviceID(t *testing.T) {
 }
 
 func TestRegisterDevice(t *testing.T) {
-	config.SetAppConfigFilePath("../../config/app.json")
+	util.SetAppConfigFilePath("../../config/app.json")
 
 	loginResult, err := auth.Login("test", "test123456")
 	if err != nil || !RegisterDevice(loginResult) {

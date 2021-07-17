@@ -1,7 +1,7 @@
 package users
 
 import (
-	"github.com/RatelData/ratel-drive-core/common/util/misc"
+	"github.com/RatelData/ratel-drive-core/common/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +13,7 @@ type LoginValidator struct {
 }
 
 func (umv *LoginValidator) Bind(c *gin.Context) error {
-	err := misc.Bind(c, umv)
+	err := util.Bind(c, umv)
 	if err != nil {
 		return err
 	}

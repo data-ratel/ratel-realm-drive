@@ -4,12 +4,12 @@ import (
 	"fmt"
 
 	_ "github.com/RatelData/ratel-drive-core/docs"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	"github.com/RatelData/ratel-drive-core/common/util/config"
-	"github.com/RatelData/ratel-drive-core/common/util/misc"
+	"github.com/RatelData/ratel-drive-core/common/util"
 	"github.com/RatelData/ratel-drive-core/service/storage"
 	"github.com/RatelData/ratel-drive-core/service/users"
 	"github.com/gin-gonic/gin"
@@ -30,26 +30,33 @@ import (
 // @host localhost:8666
 // @BasePath /
 func main() {
-	appConfig := config.GetServerConfig()
+	util.InitLogger()
+	defer util.GetLogger().Sync()
+
+	appConfig := util.GetServerConfig()
 	gin.SetMode(appConfig.GetServerMode())
 
-	misc.CheckCreateDataDirectory()
+	util.CheckCreateDataDirectory()
 
 	r := gin.Default()
 
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
 	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 
-	r.Use(static.Serve("/app", static.LocalFile("./ui/build", false)))
+	if appConfig.IsDebugMode() {
+		r.Use(cors.Default())
+	} else {
+		r.Use(static.Serve("/app", static.LocalFile("./ui", false)))
+	}
 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	v1 := r.Group("/api")
+	api := r.Group("/api")
 
-	v1_storage := v1.Group("/storage")
-	storage.RegisterAllRouters(v1_storage)
+	api_storage := api.Group("/storage")
+	storage.RegisterAllRouters(api_storage)
 
-	users.UsersRoutesRegister(v1)
+	users.UsersRoutesRegister(api)
 
 	r.Run(fmt.Sprintf(":%d", appConfig.ServerPort))
 }
