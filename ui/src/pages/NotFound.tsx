@@ -5,7 +5,7 @@ function NotFound() {
         <div>
             <h1>Oops NotFound</h1>
         </div>
-    )
+    );
 }
 
 export default NotFound;
