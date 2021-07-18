@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { Form, Button } from 'react-bootstrap';
 import './Login.css';
 
+import { loginUrl } from '../util/config';
+
 function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -67,9 +69,12 @@ async function onLogin(e: React.MouseEvent<HTMLElement, MouseEvent>, props: Logi
         )
     };
 
-    fetch('/api/login', req_options)
+    fetch(loginUrl(), req_options)
         .then(rsp => rsp.json())
         .then(data => {
             console.log(data)
+        })
+        .catch(e => {
+            console.log(e)
         });
 }
