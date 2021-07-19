@@ -1,6 +1,6 @@
 import config from '../config/app.json'
 
-export function loginUrl() {
+export function loginUrl(): string {
     const env = environment();
     const server = env.local_server
     return `${server.protocol}://${server.host}:${server.port}${config.endpoints.login}`

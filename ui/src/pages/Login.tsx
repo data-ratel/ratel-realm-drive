@@ -1,12 +1,23 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Form, Button } from 'react-bootstrap';
 import './Login.css';
 
 import { loginUrl } from '../util/config';
+import * as StorageUtils from '../util/storage'
 
 function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [storage_device_checked, setStorageDeviceChecked] = useState<boolean>(false);
+    const [is_init, setIsInit] = useState<boolean>(true);
+
+    useEffect(() => {
+        if (is_init) {
+            setStorageDeviceChecked(StorageUtils.isStorageDevice())
+            setIsInit(false)
+        }
+    }, [is_init])
+
     return(
         <div className='Login-Layout'>
             <div className='Login-Card'>
@@ -16,16 +27,21 @@ function Login() {
                 
                 <div className='Login-Card-Body'>
                     <Form>
-                        <Form.Group controlId="formCredential" className='Login-Card-Body-Cred'>
-                            <Form.Control type="email" size='lg' placeholder="Email" value={email} onChange={e=> setEmail(e.target.value)}/>
-                            <Form.Control type="password" size='lg' placeholder="Password" value={password} onChange={e=> setPassword(e.target.value)}/>
-                        </Form.Group>
+                        <div className='Login-Card-Body-Cred'>
+                            <Form.Group controlId="formEmail">
+                                <Form.Control type="email" size='lg' placeholder="example@email.com" value={email} onChange={e=> setEmail(e.target.value)}/>
+                            </Form.Group>
+                            <Form.Group controlId="formPassword">
+                                <Form.Control type="password" size='lg' placeholder="Password" value={password} onChange={e=> setPassword(e.target.value)}/>
+                            </Form.Group>
+                        </div>
+                        
 
                         <Form.Group controlId="formUtils" className='Login-Card-Body-Utils'>
-                            <Form.Check type="checkbox" label="Save password" />
+                            <Form.Check type="checkbox" checked={storage_device_checked} label="Storage Device" onChange={e=> setStorageDeviceChecked(e.target.checked) } />
                             
                             <Form.Text className="text-muted">
-                            <a href='/'>Forgot your password?</a>
+                            <a href='/'>Forget your password?</a>
                             </Form.Text>
                         </Form.Group>
 
@@ -35,7 +51,7 @@ function Login() {
                                 type="submit" 
                                 size='lg' 
                                 className='Login-Card-Body-BtnSignIn'
-                                onClick={e => onLogin(e, {email, password})}
+                                onClick={e => onLogin(e, {email, password, storage_device_checked})}
                             >
                                 SIGN IN
                             </Button>
@@ -51,7 +67,8 @@ export default Login;
 
 interface LoginProps {
     email: string,
-    password: string
+    password: string,
+    storage_device_checked: boolean
 }
 async function onLogin(e: React.MouseEvent<HTMLElement, MouseEvent>, props: LoginProps) {
     e.preventDefault();
@@ -59,20 +76,19 @@ async function onLogin(e: React.MouseEvent<HTMLElement, MouseEvent>, props: Logi
     const req_options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(
-            {
-                user: {
-                    email: props.email,
-                    password: props.password
-                }
+        body: JSON.stringify({
+            user: {
+                email: props.email,
+                password: props.password,
+                is_storage_device: props.storage_device_checked
             }
-        )
+        })
     };
 
     fetch(loginUrl(), req_options)
         .then(rsp => rsp.json())
         .then(data => {
-            console.log(data)
+            StorageUtils.saveUserCredentials(data['user']['user_id'], data['user']['token'], props.storage_device_checked)
         })
         .catch(e => {
             console.log(e)
