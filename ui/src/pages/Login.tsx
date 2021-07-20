@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { Form, Button } from 'react-bootstrap';
 import './Login.css';
 
@@ -8,15 +8,7 @@ import * as StorageUtils from '../util/storage'
 function Login() {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [storage_device_checked, setStorageDeviceChecked] = useState<boolean>(false);
-    const [is_init, setIsInit] = useState<boolean>(true);
-
-    useEffect(() => {
-        if (is_init) {
-            setStorageDeviceChecked(StorageUtils.isStorageDevice())
-            setIsInit(false)
-        }
-    }, [is_init])
+    const [storage_device_checked, setStorageDeviceChecked] = useState<boolean>(StorageUtils.isStorageDevice());
 
     return(
         <div className='Login-Layout'>
